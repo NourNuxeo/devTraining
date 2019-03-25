@@ -60,6 +60,7 @@ public class TestUpdatePrices {
 
 	@Test
 	public void shouldUpdatePrices() throws OperationException {
+		List<DocumentModel> documents = new ArrayList<>();
 		List<ProductAdapter> products = new ArrayList<>();
 		for(int i = 1; i < 10; i++) {
 			DocumentModel doc = session.createDocumentModel("/", "doc"+i, "product");
@@ -83,31 +84,32 @@ public class TestUpdatePrices {
 			default:
 				break;
 			}
-			product.doc = session.createDocument(product.doc);
+			//Create document for Test running purpose: the original method calls save and not create.
+			product.doc = session.createDocument(doc);
+			documents.add(product.doc);
 			products.add(product);
 		}
-
+		
 		OperationContext ctx = new OperationContext(session);
-		ctx.setInput(products);
+		ctx.setInput(documents);
 		automationService.run(ctx, UpdatePrices.ID);
 
 		for(int i = 1; i < 10; i++) {
-			ProductAdapter product = products.get(i-1);
 			switch (i) {
 			case 1:
 			case 2:
 			case 3:
-				Assert.assertEquals(i*1.1, product.getPrice(), 0.001);
+				Assert.assertEquals(i*1.1, products.get(i-1).getPrice(), 0.001);
 				break;
 			case 4:
 			case 5:
 			case 6:
-				Assert.assertEquals(i*2, product.getPrice(), 0.001);
+				Assert.assertEquals(i*2, products.get(i-1).getPrice(), 0.001);
 				break;
 			case 7:
 			case 8:
 			case 9:
-				Assert.assertEquals(i*10, product.getPrice(), 0.001);
+				Assert.assertEquals(i*10, products.get(i-1).getPrice(), 0.001);
 			default:
 				break;
 			}

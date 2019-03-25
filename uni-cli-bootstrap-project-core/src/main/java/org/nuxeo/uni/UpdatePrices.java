@@ -41,7 +41,8 @@ public class UpdatePrices {
 	//        }
 	//    }
 
-	private void updatePrice(ProductAdapter product) {
+	private void updatePrice(DocumentModel doc) {
+		ProductAdapter product = doc.getAdapter(ProductAdapter.class);
 		System.out.println("price was: " + product.getPrice());
 		HelloService service = Framework.getService(HelloService.class);
 		product.setPrice(service.computeContributedPrice(product));
@@ -51,15 +52,16 @@ public class UpdatePrices {
 	}
 	
 	@OperationMethod
-	public void run(ProductAdapter product) {
-		updatePrice(product);
+	public void run(DocumentModel doc) {
+		updatePrice(doc);
 		session.save();
 	}
 	
 	@OperationMethod
-	public void run(List<ProductAdapter> products) {
-		for(ProductAdapter p : products) {
-			updatePrice(p);
+	public void run(List<DocumentModel> products) {
+		System.out.println(products);
+		for(DocumentModel doc : products) {
+			updatePrice(doc);
 		}
 		session.save();
 	}
