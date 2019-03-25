@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.uni.adapters.product">
+
+  <extension target="org.nuxeo.ecm.core.api.DocumentAdapterService" point="adapters">
+    <adapter class="org.nuxeo.uni.ProductAdapter" factory="org.nuxeo.uni.ProductAdapterFactory"/>
+  </extension>
+
+</component>

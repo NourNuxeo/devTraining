@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.uni.HelloService" version="1.0">
+	<service>
+		<provide interface="org.nuxeo.uni.HelloService"></provide>
+	</service>
+	<implementation class="org.nuxeo.uni.HelloServiceImpl"></implementation>
+	<extension-point name="updateFactor"><object class="org.nuxeo.uni.FactorDescriptor"></object></extension-point>
+
+	<extension 
+	target="org.nuxeo.uni.HelloService"
+	point="updateFactor">
+		<factor distributorId="coolGuys" value="1.1"></factor>
+		<factor distributorId="richGuys" value="2"></factor>
+		<factor distributorId="apple" value="10"></factor>
+	</extension>	
+</component>
+
+
