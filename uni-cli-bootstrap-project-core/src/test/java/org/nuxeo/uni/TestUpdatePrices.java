@@ -1,12 +1,7 @@
 package org.nuxeo.uni;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 

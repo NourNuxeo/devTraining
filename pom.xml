@@ -16,6 +16,7 @@
 
   <modules>
     <module>uni-cli-bootstrap-project-core</module>
+    <module>uni-cli-bootstrap-project-package</module>
   </modules>
 
   <repositories>
@@ -71,6 +72,11 @@
       <dependency>
         <groupId>org.nuxeo.uni</groupId>
         <artifactId>uni-cli-bootstrap-project-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.uni</groupId>
+        <artifactId>uni-cli-bootstrap-project-package</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

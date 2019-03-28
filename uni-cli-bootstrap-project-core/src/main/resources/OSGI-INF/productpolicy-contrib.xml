@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.uni.productpolicy">
+
+  <extension target="org.nuxeo.ecm.core.security.SecurityService" point="policies">
+   <policy name="productPolicy"
+      class="org.nuxeo.uni.ProductSecurityPolicy" order="0" />
+  </extension>
+
+</component>

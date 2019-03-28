@@ -7,17 +7,24 @@ import java.util.Map;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.event.Event;
+import org.nuxeo.ecm.core.event.EventProducer;
+import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  *
  */
 public class ProductAdapter {
+	private static final String AVAILABLE_XPATH = "productSchema:availability";
 	public static final String DISTRIBUTOR_XPATH = "product:distributor";
 	public static final String DISTRIBUTOR_NAME_XPATH = "name";
 	public static final String PRICE_XPATH = "productSchema:price";
 	protected String titleXpath = "dc:title";
 	protected String descriptionXpath = "dc:description";
 	protected DocumentModel doc;
+	public static final String PRODUCT_AVAILABILITY_CHANGED_EVENT_ID = "productUnavailable";
+	public static final String UNAVAILABLE_FOLDER = "PRODUCTS_UNAVAILABLE";
 
 	public ProductAdapter(DocumentModel doc) {
 		this.doc = doc;
@@ -92,5 +99,22 @@ public class ProductAdapter {
 		distributor.put("name", name);
 		distributor.put("location", location);
 		doc.setPropertyValue(DISTRIBUTOR_XPATH, (Serializable) distributor);
+	}
+	
+	public void setAvailability(boolean availability) {
+		if(availability != isAvailable()) {
+			doc.setPropertyValue(AVAILABLE_XPATH, availability);
+			EventProducer eventProducer = Framework.getService(EventProducer.class);
+			CoreSession session = doc.getCoreSession();
+			DocumentEventContext ctx = new DocumentEventContext(session, session.getPrincipal(), doc);
+			Event event = ctx.newEvent(PRODUCT_AVAILABILITY_CHANGED_EVENT_ID);
+			eventProducer.fireEvent(event);
+		}
+	}
+
+	public boolean isAvailable() {
+		boolean result = (doc.getPropertyValue(AVAILABLE_XPATH) != null) ?
+				(boolean) doc.getPropertyValue(AVAILABLE_XPATH) : true;
+		return result;
 	}
 }

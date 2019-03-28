@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.uni.listener.productlistener">
+
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+    <listener name="productlistener"
+      class="org.nuxeo.uni.ProductListener">
+        <event>productUnavailable</event>
+    </listener>
+  </extension>
+
+</component>

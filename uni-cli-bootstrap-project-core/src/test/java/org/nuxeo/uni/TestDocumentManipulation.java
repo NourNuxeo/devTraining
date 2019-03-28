@@ -56,4 +56,13 @@ public class TestDocumentManipulation {
     	System.out.println(title.getXPath());
     	System.out.println(title.getValue());
     }
+    
+    @Test
+    public void aRealCuriousTest() {
+    	DocumentModel docModel = session.createDocumentModel("/", "CoolFolder", "Folder");
+    	session.createDocument(docModel);
+    	PathRef path = new PathRef("/", "CoolFolder");
+    	Assert.assertTrue(session.exists(docModel.getRef()));
+//    	Assert.assertFalse(session.exists(docModel.getRef()));
+    }
 }
