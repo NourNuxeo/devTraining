@@ -24,7 +24,7 @@ public class ProductAdapter {
 	protected String descriptionXpath = "dc:description";
 	protected DocumentModel doc;
 	public static final String PRODUCT_AVAILABILITY_CHANGED_EVENT_ID = "productUnavailable";
-	public static final String UNAVAILABLE_FOLDER = "PRODUCTS_UNAVAILABLE";
+	
 
 	public ProductAdapter(DocumentModel doc) {
 		this.doc = doc;

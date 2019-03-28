@@ -1,16 +1,14 @@
 package org.nuxeo.uni;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.ecm.core.api.security.ACE;
-import org.nuxeo.ecm.core.api.security.ACL;
-import org.nuxeo.ecm.core.api.security.ACP;
-import org.nuxeo.ecm.core.api.security.SecurityConstants;
-import org.nuxeo.ecm.core.api.security.impl.ACLImpl;
-import org.nuxeo.ecm.core.api.security.impl.ACPImpl;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -19,12 +17,26 @@ import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 
 public class ProductListener implements EventListener {
 
-	private static String forbidden;
+	public static final String UNAVAILABLE_FOLDER_PATH;
+	public static final String UNAVAILABLE_FOLDER_PROPERTY_KEY = "hiddenProductsPath";
+	private static String unavailableFolderId;
 	
-	public static String getForbidden() {
-		return forbidden;
+	public static String getUnavailableFolderId() {
+		return unavailableFolderId;
 	}
-	
+
+
+	static {
+		InputStream propsInput = ProductListener.class.getClassLoader().getResourceAsStream("product.properties");
+		Properties props = new Properties();
+		try {
+			props.load(propsInput);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		UNAVAILABLE_FOLDER_PATH =  props.getProperty(UNAVAILABLE_FOLDER_PROPERTY_KEY);
+	}
+
 	@Override
 	public void handleEvent(Event event) {
 		EventContext ctx = event.getContext();
@@ -39,35 +51,34 @@ public class ProductListener implements EventListener {
 				CoreSession session = ctx.getCoreSession();
 				String collectionID = product.doc.getId().toString();
 				String query = 
-						  "SELECT * FROM visual WHERE ecm:mixinType != 'HiddenInNavigation' "
-						+ "AND ecm:isProxy = 0 AND ecm:isVersion = 0 "
-						+ "AND ecm:isTrashed = 0 "
-						+ "AND collectionMember:collectionIds = '" + collectionID + "'";
+						"SELECT * FROM visual WHERE ecm:mixinType != 'HiddenInNavigation' "
+								+ "AND ecm:isProxy = 0 AND ecm:isVersion = 0 "
+								+ "AND ecm:isTrashed = 0 "
+								+ "AND collectionMember:collectionIds = '" + collectionID + "'";
 				DocumentModelList dml = session.query(query);
 				if(dml.size() > 0) {
-					PathRef forbiddenRootPathRef = new PathRef("/" + ProductAdapter.UNAVAILABLE_FOLDER);
-					
+					PathRef forbiddenRootPathRef = new PathRef("/" + UNAVAILABLE_FOLDER_PATH);
+
 					if(!session.exists(forbiddenRootPathRef)){
-						DocumentModel rootDocModel = session.createDocumentModel("/", ProductAdapter.UNAVAILABLE_FOLDER, "Folder");
-//						ACP acp = new ACPImpl();
-//						ACL acl = new ACLImpl();
-//						ACE ace = new ACE("group:Groupe1", SecurityConstants.EVERYTHING, false);
-//						acl.add(ace);
-//						acp.addACL(acl);
+						DocumentModel rootDocModel = session.createDocumentModel("/", UNAVAILABLE_FOLDER_PATH, "Folder");
+						//						ACP acp = new ACPImpl();
+						//						ACL acl = new ACLImpl();
+						//						ACE ace = new ACE("group:Groupe1", SecurityConstants.EVERYTHING, false);
+						//						acl.add(ace);
+						//						acp.addACL(acl);
 						rootDocModel = session.createDocument(rootDocModel);
-//						rootDocModel.setACP(acp, true);
-						
+						//						rootDocModel.setACP(acp, true);
+
 					}
 					
-					if(forbidden == null) {
-						forbidden = session.getDocument(forbiddenRootPathRef).getId();
-						System.out.println("FORBIDDEN: " + forbidden);
-					};
-					
+					if(unavailableFolderId == null) {
+						unavailableFolderId = session.getDocument(forbiddenRootPathRef).getId();
+					}
+
 					DocumentModel docModel;
-					PathRef forbiddenPathRef = new PathRef("/" + ProductAdapter.UNAVAILABLE_FOLDER + "/" + collectionID);
+					PathRef forbiddenPathRef = new PathRef("/" + UNAVAILABLE_FOLDER_PATH + "/" + collectionID);
 					if(!session.exists(forbiddenPathRef)){
-						docModel = session.createDocumentModel("/" + ProductAdapter.UNAVAILABLE_FOLDER, collectionID, "Folder");
+						docModel = session.createDocumentModel("/" + UNAVAILABLE_FOLDER_PATH, collectionID, "Folder");
 						docModel = session.createDocument(docModel);
 					} else {
 						docModel = session.getDocument(forbiddenPathRef);
@@ -77,7 +88,7 @@ public class ProductListener implements EventListener {
 					}
 				} 
 				session.save();
-				System.out.println("FIRED @@@@@@@@@@@@");
+//				System.out.println("FIRED @@@@@@@@@@@@");
 			}
 		}
 	}

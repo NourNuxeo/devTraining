@@ -25,7 +25,7 @@ public class ProductSecurityPolicy extends AbstractSecurityPolicy implements Sec
 			String[] resolvedPermissions, String[] additionalPrincipals) {
 		// Note that doc is NOT a DocumentModel
 		if (principal.getAllGroups().contains(REJECTED_GROUP) 
-				&& doc.getPath().startsWith("/" + ProductAdapter.UNAVAILABLE_FOLDER)) {
+				&& doc.getPath().startsWith("/" + ProductListener.UNAVAILABLE_FOLDER_PATH)) {
 			return Access.DENY;
 		}
 		return Access.UNKNOWN;
@@ -54,21 +54,25 @@ public class ProductSecurityPolicy extends AbstractSecurityPolicy implements Sec
 	 */
 	public static class ProductTransformer implements SQLQuery.Transformer {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8349617328478373922L;
+		private static Predicate NO_ACCESS;
+
 		@Override
 		public SQLQuery transform(NuxeoPrincipal principal, SQLQuery query) {
-			Predicate NO_ACCESS = new Predicate(
-					new Reference(NXQL.ECM_ANCESTORID), Operator.NOTEQ, new StringLiteral(ProductListener.getForbidden()));
-//					new Reference(NXQL.ECM_NAME), Operator.NOTILIKE, new StringLiteral("Choco%"));
-//			System.out.println("NO ACCESS: " + ProductListener.getForbidden());
+			if(NO_ACCESS == null || ((StringLiteral)NO_ACCESS.rvalue).value == null) {
+				NO_ACCESS = new Predicate(new Reference(NXQL.ECM_ANCESTORID), Operator.NOTEQ, new StringLiteral(ProductListener.getUnavailableFolderId()));
+			}
 			WhereClause where = query.where;
 			if(principal.getAllGroups().contains(REJECTED_GROUP)) {
-				System.out.println("YOU ARE REJECTED");
 				Predicate builtPredicate;
 				builtPredicate = (where == null || where.predicate == null) ? 
 					NO_ACCESS :
 					new Predicate(NO_ACCESS, Operator.AND, where.predicate);
 				where = new WhereClause(builtPredicate);
-			} 
+			}
 			return new SQLQuery(query.select, query.from, where,
 					query.groupBy, query.having, query.orderBy, query.limit, query.offset);
 		}

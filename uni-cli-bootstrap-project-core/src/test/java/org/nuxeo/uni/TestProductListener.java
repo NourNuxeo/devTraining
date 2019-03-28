@@ -78,28 +78,30 @@ public class TestProductListener {
     	
     	Assert.assertFalse(session.exists(new PathRef(docVisual.getPathAsString())));
     	
-    	System.out.println("@@@@@@@@@@@ " + docVisual.getPathAsString());
-    	session.getDocument(new PathRef("/" + ProductAdapter.UNAVAILABLE_FOLDER 
+//    	System.out.println("@@@@@@@@@@@ " + docVisual.getPathAsString());
+    	session.getDocument(new PathRef("/" + ProductListener.UNAVAILABLE_FOLDER_PATH 
     			+ "/" + docCollection.getId() 
     			+ docVisual.getPathAsString()));
     	
     	session.getPrincipal().setGroups(Arrays.asList("Groupe1"));
     	
     	
-    	System.out.println("shouldn't find");
-    	String path = "/" + ProductAdapter.UNAVAILABLE_FOLDER 
-    			+ "/" + docCollection.getId() 
-    			+ docVisual.getPathAsString();
-    	System.out.println(path);
+//    	System.out.println("shouldn't find");
+//    	String path = "/" + ProductListener.UNAVAILABLE_FOLDER_PATH 
+//    			+ "/" + docCollection.getId() 
+//    			+ docVisual.getPathAsString();
+//    	System.out.println(path);
     	
     	
     	String query = "SELECT * FROM visual";
     	DocumentModelList dml = session.query(query);
-    	for(DocumentModel d : dml) {
-    		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    		System.out.println(d);
-    	}
     	
+//    	for(DocumentModel d : dml) {
+//    		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//    		System.out.println(d);
+//    	}
+//    	
+    	Assert.assertEquals(dml.size(), 0);
     	
 //    	System.out.println(session.getDocument(new PathRef("/" + ProductAdapter.UNAVAILABLE_FOLDER)).getId());
 //    	System.out.println(session.getDocument(new PathRef("/" + ProductAdapter.UNAVAILABLE_FOLDER)));
