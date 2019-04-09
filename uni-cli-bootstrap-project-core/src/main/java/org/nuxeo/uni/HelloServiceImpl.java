@@ -1,14 +1,25 @@
 package org.nuxeo.uni;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import org.nuxeo.ecm.directory.Directory;
+import org.nuxeo.ecm.directory.Session;
+import org.nuxeo.ecm.directory.api.DirectoryService;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 public class HelloServiceImpl extends DefaultComponent implements HelloService {
 
+	private static final String DISTRIBUTORS_DIR_NAME = "distributors";
 	private HashMap<String, FactorDescriptor> factors;
+	
+	@Override
+	public Map<String, FactorDescriptor> getDistributors() {
+		return factors;
+	}
 
 	@Override
 	public String helloWorld() {
@@ -16,7 +27,7 @@ public class HelloServiceImpl extends DefaultComponent implements HelloService {
 	}
 	
 	@Override
-	public double computePrice(ProductAdapter product) {
+	public double getPrice(ProductAdapter product) {
 		return product.getPrice();
 	}
 	
@@ -37,9 +48,21 @@ public class HelloServiceImpl extends DefaultComponent implements HelloService {
 			factors.put(factor.distributorId, factor);
 		}
 	}
+	
+	private void persistDistributor(FactorDescriptor factor) {
+		DirectoryService dirService = Framework.getService(DirectoryService.class);
+		Session session = dirService.open(DISTRIBUTORS_DIR_NAME);
+		if(!session.hasEntry(factor.distributorId)) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("name", factor.distributorId);
+			params.put("factor", factor.factorValue);
+			params.put("location ", factor.location);
+			session.createEntry(params);
+		}
+	}
 
 	@Override
-	public double computeContributedPrice(ProductAdapter product) {
-		return product.getPrice() * factors.get(product.getDistributorId()).value;
+	public double computePrice(ProductAdapter product) {
+		return product.getPrice() * factors.get(product.getDistributorId()).factorValue;
 	}
 }

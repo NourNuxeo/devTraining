@@ -9,7 +9,7 @@
 
   <artifactId>uni-cli-bootstrap-project-package</artifactId>
   <packaging>zip</packaging>
-  <name>Uni cli bootstrap project package - Uni cli project nour</name>
+  <name>Uni cli bootstrap project package - Uni package</name>
 
   <dependencies>
     <!-- Base distribution(s) for the MP -->

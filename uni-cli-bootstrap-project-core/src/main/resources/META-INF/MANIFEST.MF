@@ -7,9 +7,12 @@ Bundle-Name: uni-cli-bootstrap-project-core
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.nuxeo.uni.uni-cli-bootstrap-project-core;singleton=true
 Nuxeo-Component: OSGI-INF/cooloperation-operation-contrib.xml,
+ OSGI-INF/distributor-directory-contrib.xml,
  OSGI-INF/cooloperation-service-contrib.xml,
  OSGI-INF/coolerops-operation-contrib.xml,
  OSGI-INF/org.nuxeo.uniproduct-adapter-contrib.xml,
  OSGI-INF/updateprices-operation-contrib.xml,
  OSGI-INF/productlistener-listener-contrib.xml,
- OSGI-INF/productpolicy-contrib.xml
+ OSGI-INF/productpolicy-contrib.xml,
+ OSGI-INF/adddistributor-operation-contrib.xml,
+ OSGI-INF/org.nuxeo.univisual-adapter-contrib.xml

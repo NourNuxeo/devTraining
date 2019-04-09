@@ -1,11 +1,11 @@
 <!-- See documentation at http://doc.nuxeo.com/x/HgIz -->
-<package type="addon" name="uni-cli-project-nour" version="@VERSION@">
-  <title>Uni cli project nour</title>
+<package type="addon" name="uni-package" version="@VERSION@">
+  <title>Uni package</title>
   <description>
     <p>Put here an HTML description of your Nuxeo Package.</p>
   </description>
   <!-- <home-page>http://doc.nuxeo.com/</home-page> -->
-  <vendor>nouxeo</vendor>
+  <vendor>nuxeo</vendor>
   <installer restart="true" />
   <uninstaller restart="true" />
   <!-- <hotreload-support>false</hotreload-support> -->

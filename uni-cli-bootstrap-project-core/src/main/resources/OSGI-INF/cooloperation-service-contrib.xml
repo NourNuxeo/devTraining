@@ -9,10 +9,8 @@
 	<extension 
 	target="org.nuxeo.uni.HelloService"
 	point="updateFactor">
-		<factor distributorId="coolGuys" value="1.1"></factor>
-		<factor distributorId="richGuys" value="2"></factor>
-		<factor distributorId="apple" value="10"></factor>
+		<factor distributorId="coolGuys" factorValue="1.1" location="Creuse"></factor>
+		<factor distributorId="richGuys" factorValue="2" location="Paris"></factor>
+		<factor distributorId="apple" factorValue="10" location="Cuppertino"></factor>
 	</extension>	
 </component>
-
-

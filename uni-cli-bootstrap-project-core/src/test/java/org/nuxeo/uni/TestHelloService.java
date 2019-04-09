@@ -49,6 +49,6 @@ public class TestHelloService {
     	HelloService service = Framework.getService(HelloService.class);
     	
     	ProductAdapter product = doc.getAdapter(ProductAdapter.class);
-    	Assert.assertEquals(42, service.computePrice(product), 0.00001);
+    	Assert.assertEquals(42, service.getPrice(product), 0.00001);
     }
 }

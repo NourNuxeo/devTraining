@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.uni.directory.distributor" version="1.0">
+
+	<directory name="distributors">
+		<schema>Distributor</schema>
+		<idField>distributor:name</idField>
+<!-- 		<passwordField>password</passwordField> -->
+		<readOnly>false</readOnly>
+<!-- 		<references /> -->
+	</directory>
+
+</component>
+

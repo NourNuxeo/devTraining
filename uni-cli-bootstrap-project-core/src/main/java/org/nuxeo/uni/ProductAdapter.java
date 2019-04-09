@@ -11,11 +11,12 @@ import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventProducer;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.uni.behavior.Valuable;
 
 /**
  *
  */
-public class ProductAdapter {
+public class ProductAdapter implements Valuable {
 	private static final String AVAILABLE_XPATH = "productSchema:availability";
 	public static final String DISTRIBUTOR_XPATH = "product:distributor";
 	public static final String DISTRIBUTOR_NAME_XPATH = "name";

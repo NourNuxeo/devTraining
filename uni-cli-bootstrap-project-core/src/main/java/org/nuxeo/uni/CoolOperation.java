@@ -27,10 +27,8 @@ public class CoolOperation {
     @OperationMethod
     public DocumentModel run() {
         if (StringUtils.isBlank(path)) {
-        	System.out.println("@@@@@@@@@@@@@@@@NOUR");
             return session.getRootDocument();
         } else {
-        	System.out.println("################NOUR");
             return session.getDocument(new PathRef(path));
         }
     }
