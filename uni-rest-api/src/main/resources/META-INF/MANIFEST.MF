@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-Vendor: org.nuxeo.uni
+Bundle-Name: uni-rest-api
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.nuxeo.uni.uni-rest-api;singleton:=true
+Fragment-Host: org.nuxeo.ecm.platform.restapi.server
+Bundle-Version: 1.0.0

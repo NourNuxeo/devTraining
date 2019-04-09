@@ -16,6 +16,7 @@
 
   <modules>
     <module>uni-cli-bootstrap-project-core</module>
+    <module>uni-rest-api</module>
     <module>uni-cli-bootstrap-project-package</module>
   </modules>
 

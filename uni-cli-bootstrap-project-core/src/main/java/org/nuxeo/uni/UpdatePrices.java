@@ -23,9 +23,7 @@ public class UpdatePrices {
 
 	@Context
 	protected CoreSession session;
-
-	@Param(name = "products", required = false)
-	protected List<ProductAdapter> products;
+	
 
 	private void updatePrice(DocumentModel doc) throws OperationException {
 		VisualAdapter visual = doc.getAdapter(VisualAdapter.class);
@@ -58,24 +56,4 @@ public class UpdatePrices {
 		}
 		session.save();
 	}
-
-	//    @OperationMethod
-	//    public void run(List<ProductAdapter> products) {
-	//    	for(ProductAdapter p : products) {
-	//    		System.out.println("price was: " + p.getPrice());
-	//    		p.setPrice(p.getPrice()*2);
-	//    		System.out.println("price is: " + p.getPrice());
-	//    		p.doc = session.saveDocument(p.doc);
-	////    		saveProduct(p);
-	//    	}
-	//    	session.save();
-	//    }
-
-	//    private void saveProduct(ProductAdapter p) {
-	//    	try {
-	//    		p.doc = session.saveDocument(p.doc);
-	//    	} catch (DocumentNotFoundException e) {
-	//    		p.doc = session.createDocument(p.doc);
-	//    	}
-	//    }
 }
