@@ -83,29 +83,29 @@ public class TestAddDistributor {
 		Assert.assertEquals(rambo.location, params.get("location"));
 		Assert.assertEquals(rambo.factorValue, Double.parseDouble((String) params.get("value")), 0.0001);
 
-		SAXReader reader = new SAXReader();
-		try { 
-			Document docXML = reader.read(this.getClass().getClassLoader().getResourceAsStream("OSGI-INF/cooloperation-service-contrib.xml"));
-			Element root = docXML.getRootElement();
-			Element factors = (Element) root.selectSingleNode("extension[@target='org.nuxeo.uni.HelloService' and @point='updateFactor']");
-			List<Element> children = factors.elements("factor");
-			Assert.assertEquals(4, children.size());
-			boolean found = false;
-			for(Element f : children) {
-				System.out.println(f);
-				if(
-						f.attributeValue("distributorId").contentEquals((String)params.get("name"))
-						&& f.attributeValue("factorValue").contentEquals((String)params.get("value"))
-						&& (f.attributeValue("location").contentEquals((String)params.get("location")))) {
-					found = true;
-				}
-			}
-			Assert.assertEquals(4, children.size());
-			Assert.assertTrue(found);
-		} catch (DocumentException e) {
-			System.out.println("couldn't read Resource");
-			e.printStackTrace();
-		}
+//		SAXReader reader = new SAXReader();
+//		try { 
+//			Document docXML = reader.read(this.getClass().getClassLoader().getResourceAsStream("OSGI-INF/cooloperation-service-contrib.xml"));
+//			Element root = docXML.getRootElement();
+//			Element factors = (Element) root.selectSingleNode("extension[@target='org.nuxeo.uni.HelloService' and @point='updateFactor']");
+//			List<Element> children = factors.elements("factor");
+//			Assert.assertEquals(4, children.size());
+//			boolean found = false;
+//			for(Element f : children) {
+//				System.out.println(f);
+//				if(
+//						f.attributeValue("distributorId").contentEquals((String)params.get("name"))
+//						&& f.attributeValue("factorValue").contentEquals((String)params.get("value"))
+//						&& (f.attributeValue("location").contentEquals((String)params.get("location")))) {
+//					found = true;
+//				}
+//			}
+//			Assert.assertEquals(4, children.size());
+//			Assert.assertTrue(found);
+//		} catch (DocumentException e) {
+//			System.out.println("couldn't read Resource");
+//			e.printStackTrace();
+//		}
 	}
 
 	//    @Test

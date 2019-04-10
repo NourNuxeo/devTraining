@@ -1,17 +1,8 @@
 package org.nuxeo.uni;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
@@ -56,27 +47,26 @@ public class AddDistributor {
         params.put(DISTRIBUTOR_LOCATION, location);
         params.put(DISTRIBUTOR_FACTOR_VALUE, value);
         run(params);
-        System.out.println(params);
     }
     
     @OperationMethod
     public void run(Map<String, String> distributorMap) {
-    	SAXReader reader = new SAXReader();
-		try {
-			Document docXML = reader.read(this.getClass().getClassLoader().getResourceAsStream("OSGI-INF/cooloperation-service-contrib.xml"));
-			Element root = docXML.getRootElement();
-			Element factors = (Element) root.selectSingleNode("extension[@target='org.nuxeo.uni.HelloService' and @point='updateFactor']");
-			Element newDistributor = factors.addElement("factor");
-			newDistributor.addAttribute(DISTRIBUTOR_ID, distributorMap.get(DISTRIBUTOR_ID));
-			newDistributor.addAttribute(DISTRIBUTOR_FACTOR_VALUE, distributorMap.get(DISTRIBUTOR_FACTOR_VALUE));
-			newDistributor.addAttribute(DISTRIBUTOR_LOCATION, distributorMap.get(DISTRIBUTOR_LOCATION));
-			
-			OutputFormat format = OutputFormat.createPrettyPrint();
-			
-			XMLWriter writer = new XMLWriter(new PrintWriter(this.getClass().getClassLoader().getResource("OSGI-INF/cooloperation-service-contrib.xml").getPath()), format);
-			writer.write(docXML);
-			writer.flush();
-			System.out.println(this.getClass().getClassLoader().getResource("OSGI-INF/cooloperation-service-contrib.xml").getPath());
+//    	SAXReader reader = new SAXReader();
+//		try {
+//			Document docXML = reader.read(this.getClass().getClassLoader().getResourceAsStream("OSGI-INF/cooloperation-service-contrib.xml"));
+//			Element root = docXML.getRootElement();
+//			Element factors = (Element) root.selectSingleNode("extension[@target='org.nuxeo.uni.HelloService' and @point='updateFactor']");
+//			Element newDistributor = factors.addElement("factor");
+//			newDistributor.addAttribute(DISTRIBUTOR_ID, distributorMap.get(DISTRIBUTOR_ID));
+//			newDistributor.addAttribute(DISTRIBUTOR_FACTOR_VALUE, distributorMap.get(DISTRIBUTOR_FACTOR_VALUE));
+//			newDistributor.addAttribute(DISTRIBUTOR_LOCATION, distributorMap.get(DISTRIBUTOR_LOCATION));
+//			
+//			OutputFormat format = OutputFormat.createPrettyPrint();
+//			
+//			XMLWriter writer = new XMLWriter(new PrintWriter(this.getClass().getClassLoader().getResource("OSGI-INF/cooloperation-service-contrib.xml").getPath()), format);
+//			writer.write(docXML);
+//			writer.flush();
+//			System.out.println(this.getClass().getClassLoader().getResource("OSGI-INF/cooloperation-service-contrib.xml").getPath());
 			
 			FactorDescriptor newFactor = new FactorDescriptor(
 					distributorMap.get(DISTRIBUTOR_ID),
@@ -85,15 +75,19 @@ public class AddDistributor {
 			
 			HelloService helloService = Framework.getService(HelloService.class);
 			((HelloServiceImpl)helloService).registerContribution(newFactor, null, null);
-		} catch (DocumentException e) {
-			System.out.println("couldn't read Resource");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("couldn't write Resource");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("couldn't write Resource because of dom4j writer exception");
-			e.printStackTrace();
-		}
+			Map<String, FactorDescriptor> distributors = helloService.getDistributors();
+			for(String s : distributors.keySet()) {
+				System.out.println("DISTRIBUTOR: " + distributors.get(s));
+			}
+//		} catch (DocumentException e) {
+//			System.out.println("couldn't read Resource");
+//			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			System.out.println("couldn't write Resource");
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			System.out.println("couldn't write Resource because of dom4j writer exception");
+//			e.printStackTrace();
+//		}
     }
 }

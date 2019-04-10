@@ -24,4 +24,9 @@ public class FactorDescriptor {
 	@XNode("@location")
 	public String location;
 	
+	@Override
+	public String toString() {
+		return "Distributor: " + distributorId + " location: " + location + " factor: " + factorValue;
+	}
+	
 }
