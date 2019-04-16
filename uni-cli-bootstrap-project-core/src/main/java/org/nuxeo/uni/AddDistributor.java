@@ -77,7 +77,7 @@ public class AddDistributor {
 			((HelloServiceImpl)helloService).registerContribution(newFactor, null, null);
 			Map<String, FactorDescriptor> distributors = helloService.getDistributors();
 			for(String s : distributors.keySet()) {
-				System.out.println("DISTRIBUTOR: " + distributors.get(s));
+				System.out.println(distributors.get(s));
 			}
 //		} catch (DocumentException e) {
 //			System.out.println("couldn't read Resource");

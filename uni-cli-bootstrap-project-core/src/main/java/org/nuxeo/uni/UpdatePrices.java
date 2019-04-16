@@ -37,8 +37,7 @@ public class UpdatePrices {
 		visual.refreshVisuals();
 		
 		//this log will be removed with the product instanciation.
-		System.out.printf(product.getDistributorId() + "'s price is: %.2f", ProductUtils.getFormattedPrice(visual));
-		System.out.println();
+		System.out.println(product.getDistributorId() + "'s price is: " + ProductUtils.getFormattedPrice(visual));
 		visual.doc = session.saveDocument(visual.doc);
 	}
 	
